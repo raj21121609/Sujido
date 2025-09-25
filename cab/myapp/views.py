@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+import random 
+import smtplib
 
 # Create your views here.
 def home(request):
@@ -16,9 +18,53 @@ def home(request):
             password = request.POST.get('password')
             
             
+            def otp_gen():
+                return random.randint(1111,10000)
+            
+            def send_email(otp):
+                otp = otp_gen()
+                from email.mime.text import MIMEText
+
+                sender = "124raj2112@sjcem.edu.in"
+                recipient = f"{email}"
+                password = "wrhgwdokogtikzjq"
+
+                # Create the email message
+                body = f"""
+                Subject: Your OTP Verification Code
+
+                Dear {name},
+
+                Thank you for signing up with us. To verify your email, please enter the following
+
+                One Time Password (OTP): {otp}
+
+                This OTP is valid for 10 minutes from the receipt of this email.
+
+                Best regards,
+                Sujido cabs
+
+                """
+                msg = MIMEText(body, "plain")   # "plain" = text email
+                msg["Subject"] = "🎓 Test Email from Python"   # <-- subject line
+                msg["From"] = sender
+                msg["To"] = recipient
+
+                # Send the email
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender, password)
+                server.sendmail(sender, recipient, msg.as_string())
+                server.quit()
+
+                print("✅ Email sent with subject!")
             
             
+            send_email()
             
+            
+                                
+                            
             
             
             
