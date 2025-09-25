@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification - Cab Booking</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fef6e4 0%, #fde68a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .otp-container {
+      background: white;
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid rgba(255, 214, 10, 0.2);
+    }
+
+    .otp-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 6px 14px rgba(245, 158, 11, 0.4);
+    }
+
+    .otp-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.025em;
+    }
+
+    .otp-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .otp-input-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .otp-input {
+      width: 100%;
+      max-width: 200px;
+      height: 60px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1f2937;
+      background: #f9fafb;
+      transition: all 0.2s ease;
+      outline: none;
+      letter-spacing: 0.5rem;
+    }
+
+    .otp-input:focus {
+      border-color: #f59e0b;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+    }
+
+    .otp-input:valid {
+      background: #fff8e1;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .otp-input::placeholder {
+      color: #d1d5db;
+      letter-spacing: 0.5rem;
+      font-weight: 400;
+    }
+
+    .char-counter {
+      text-align: right;
+      color: #9ca3af;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .verify-button {
+      width: 100%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+    }
+
+    .verify-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(245, 158, 11, 0.5);
+    }
+
+    .verify-button:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .resend-section {
+      text-align: center;
+    }
+
+    .resend-text {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .resend-link {
+      color: #f59e0b;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .resend-link:hover {
+      color: #d97706;
+      text-decoration: underline;
+    }
+
+    .timer {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    /* Success state styling */
+    .success-message {
+      background: #dcfce7;
+      color: #166534;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border: 1px solid #22c55e;
+      display: none;
+    }
+
+    /* Error state styling */
+    .error-message {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      border: 1px solid #f87171;
+      display: none;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .otp-container {
+        padding: 2rem;
+      }
+
+      .otp-input {
+        height: 50px;
+        font-size: 1.25rem;
+        letter-spacing: 0.3rem;
+      }
+
+      .otp-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="otp-container">
+    <div class="otp-icon">🚕</div>
+    
+    <h1 class="otp-title">Verify Your Ride</h1>
+    <p class="otp-subtitle">
+      We've sent a 4-digit verification code to your registered email address
+    </p>
+
+    <div class="success-message" id="successMessage">
+      OTP verified successfully! Redirecting...
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      Invalid OTP. Please try again.
+    </div>
+
+    <form class="otp-form" id="otpForm" action="#" method="post">
+        {% csrf_token %}
+      <div class="otp-input-container">
+        <input 
+          type="text" 
+          class="otp-input" 
+          name="otp" 
+          id="otpInput" 
+          maxlength="4" 
+          pattern="[0-9]{4}" 
+          placeholder="0000"
+          autocomplete="one-time-code"
+          inputmode="numeric"
+          required
+        >
+      </div>
+
+      <div class="char-counter">
+        <span id="charCount">0</span>/4 digits entered
+      </div>
+
+      <button type="submit" class="verify-button" id="verifyBtn">
+        Verify & Continue
+      </button>
+    </form>
+
+    <div class="resend-section">
+      <p class="resend-text">Didn't receive the code?</p>
+      <a href="#" class="resend-link" id="resendLink">Resend Code</a>
+      <p class="resend-text" id="timerText" style="display: none;">
+        Resend in <span class="timer" id="timer">30</span>s
+      </p>
+    </div>
+  </div>
+</body>
+</html>
