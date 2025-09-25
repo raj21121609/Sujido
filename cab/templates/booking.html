@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideFlow - Modern Cab Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'booking.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="map-section">
+            <div id="map"></div>
+        </div>
+
+        <div class="booking-section">
+            <form class="booking-form" method='POST'>
+                {% csrf_token %}
+                <h2 class="form-title">Book Your Ride</h2>
+                <p class="form-subtitle">Fast, reliable, and affordable transportation</p>
+                
+                {% if error_message %}
+                <div style="background: #fee; border: 1px solid #fcc; color: #c33; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
+                    ⚠️ {{ error_message }}
+                </div>
+                {% endif %}
+                
+                <div class="input-group">
+                    <label class="input-label" for="pickup">Pickup Location</label>
+                    <div class="autocomplete-container">
+                        <div class="input-wrapper">
+                            <div class="input-icon">A</div>
+                            <input 
+                                type="text" 
+                                id="pickup" 
+                                class="input-field" 
+                                placeholder="Enter your pickup address..."
+                                required
+                                name="pickup"
+                                autocomplete="off"
+                            >
+                        </div>
+                        <div class="autocomplete-dropdown" id="pickup-dropdown"></div>
+                    </div>
+                </div>
+
+                <div class="route-connector">
+                    <div class="route-line"></div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="drop">Destination</label>
+                    <div class="autocomplete-container">
+                        <div class="input-wrapper">
+                            <div class="input-icon">B</div>
+                            <input 
+                                type="text" 
+                                id="drop" 
+                                class="input-field" 
+                                placeholder="Where are you going?"
+                                required
+                                name='drop'
+                                autocomplete="off"
+                            >
+                        </div>
+                        <div class="autocomplete-dropdown" id="drop-dropdown"></div>
+                    </div>
+                </div>
+
+                <div class="input-group vehicle-selection">
+                    <label class="input-label">Choose Your Vehicle</label>
+                    <div class="vehicle-grid">
+                        <label class="vehicle-option" for="sujido-mini">
+                            <input type="radio" id="sujido-mini" name="vehicle" value="sujido-mini" required>
+                            <div class="vehicle-content" style="display: flex; align-items: center; gap: 1rem; width: 100%;">
+                                <div class="vehicle-icon">🚗</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-name">Sujido Mini</div>
+                                    <div class="vehicle-description">Compact and economical for city rides</div>
+                                    <div class="vehicle-features">
+                                        <span class="vehicle-feature">4 seats</span>
+                                        <span class="vehicle-feature">AC</span>
+                                        <span class="vehicle-feature">Economy</span>
+                                    </div>
+                                </div>
+                                <div class="vehicle-price">
+                                    <div class="price-amount">₹4/km</div>
+                                    <div class="price-label">Per KM</div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="vehicle-option" for="sujido-plus">
+                            <input type="radio" id="sujido-plus" name="vehicle" value="sujido-plus" required>
+                            <div class="vehicle-content" style="display: flex; align-items: center; gap: 1rem; width: 100%;">
+                                <div class="vehicle-icon">🚙</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-name">Sujido Plus</div>
+                                    <div class="vehicle-description">Comfortable mid-size for longer trips</div>
+                                    <div class="vehicle-features">
+                                        <span class="vehicle-feature">6 seats</span>
+                                        <span class="vehicle-feature">Premium AC</span>
+                                        <span class="vehicle-feature">Comfort</span>
+                                    </div>
+                                </div>
+                                <div class="vehicle-price">
+                                    <div class="price-amount">₹5/km</div>
+                                    <div class="price-label">Per KM</div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="vehicle-option" for="sujido-premium">
+                            <input type="radio" id="sujido-premium" name="vehicle" value="sujido-premium" required>
+                            <div class="vehicle-content" style="display: flex; align-items: center; gap: 1rem; width: 100%;">
+                                <div class="vehicle-icon">🚐</div>
+                                <div class="vehicle-info">
+                                    <div class="vehicle-name">Sujido Premium</div>
+                                    <div class="vehicle-description">Luxury experience with extra space</div>
+                                    <div class="vehicle-features">
+                                        <span class="vehicle-feature">8 seats</span>
+                                        <span class="vehicle-feature">Luxury</span>
+                                        <span class="vehicle-feature">WiFi</span>
+                                    </div>
+                                </div>
+                                <div class="vehicle-price">
+                                    <div class="price-amount">₹6/km</div>
+                                    <div class="price-label">Per KM</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="button" class="book-button" id="bookButton">
+                    🚀 Book Now
+                </button>
+
+                <div class="feature-pills">
+                    <div class="pill">⚡ Instant Booking</div>
+                    <div class="pill">💳 Cashless</div>
+                    <div class="pill">📍 Live Tracking</div>
+                </div>
+            </form>
+
+            <!-- Ride Details Section -->
+            <div class="ride-details" id="rideDetails">
+                <h3 class="ride-details-title">
+                    🎯 Ride Details
+                </h3>
+                
+                <div class="route-summary">
+                    <div class="route-summary-title">
+                        📍 Route Summary
+                    </div>
+                    <div class="route-info">
+                        <div class="route-point">
+                            <div class="route-point-icon">A</div>
+                            <div class="route-point-text" id="pickupSummary">Pickup Location</div>
+                        </div>
+                        <div class="route-point">
+                            <div class="route-point-icon">B</div>
+                            <div class="route-point-text" id="dropSummary">Destination</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">💰</div>
+                        <div class="detail-value" id="totalPrice">
+                             {{cost}}
+                        </div>
+                        <div class="detail-label">Total Price</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon">⏱️</div>
+                        <div class="detail-value" id="estimatedTime">{{time}}</div>
+                        <div class="detail-label">Est. Time</div>
+                    </div>
+                </div>
+
+                <button type="button" class="confirm-button" id="confirmButton">
+                    ✅ Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{% static "booking.js" %}"></script>
+
+</body>
+</html>

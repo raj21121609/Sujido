@@ -1,0 +1,706 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{% static 'landing.css' %}">
+
+</head>
+
+<body>
+    <nav
+        style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; background: rgba(0, 0, 0, 0.1); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div
+            style="display: flex; align-items: center; gap: 0.5rem; color: #FFC107; font-size: 1.5rem; font-weight: bold; padding-left: 120px;">
+            🚕 Sujido</div>
+
+        <div style="display:flex; align-items:center; gap: 0.75rem; margin-right: 100px;">
+            <ul
+                style="display: flex; list-style: none; margin: 0; padding: 0; gap: 1rem; align-items: center;">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Services</a></li>
+                <li><a href="#" class="nav-link">Reviews</a></li>
+                <li><a href="#" class="nav-link">Contacts</a></li>
+            </ul>
+            <div class="profile">
+                <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false" title="Profile">
+                    <img src="{% static 'icons8-logout-50.png' %}" alt="Profile">
+                </button>
+                <div id="profileMenu" class="profile-menu" role="menu" aria-labelledby="profileBtn">
+                    <button class="logout-btn" role="menuitem" id="logoutBtn">Log out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div
+            style="background-image: url({% static 'pexels-tim-samuel-5834943.jpg' %}); background-size: cover; background-position: center; background-repeat: no-repeat; height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative;">
+        <div
+            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1;">
+        </div>
+
+        <h3
+            style="color: rgb(247, 247, 41); font-size: 1.5rem; margin: 0 0 0.3rem 0; font-weight: 400; position: relative; z-index: 2;">
+            Most Trusted</h3>
+        <h1
+            style="color: white; font-size: 3rem; margin: 0; font-weight: bold; text-transform: capitalize; position: relative; z-index: 2;">
+            Cab booking in palghar</h1>
+
+        <a href="/book"><button class="hero-button">Book Now</button></a>
+    </div>
+
+    <div class="cards-container">
+        <div class="card">
+            <p class="card-title">Best Price</p>
+            <p class="card-title" style="margin-top: -0.5em;">Guaranteed</p>
+            <p class="small-desc">
+                We offer the most competitive rates in Palghar with transparent pricing and no hidden charges for all
+                your taxi needs.
+            </p>
+            <div class="go-corner">
+                <div class="go-arrow">💰</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="card-title">24/7 Customer</p>
+            <p class="card-title" style="margin-top: -0.5em;">Care Service</p>
+            <p class="small-desc">
+                Round-the-clock customer support to assist you with bookings, queries, and emergency ride requests
+                anytime.
+            </p>
+            <div class="go-corner">
+                <div class="go-arrow">🕐</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="card-title">Home</p>
+            <p class="card-title" style="margin-top: -0.5em;">Pickups</p>
+            <p class="small-desc">
+                Convenient doorstep pickup service from your home, office, or any location in Palghar for maximum
+                comfort.
+            </p>
+            <div class="go-corner">
+                <div class="go-arrow">🏠</div>
+            </div>
+        </div>
+    </div>
+    <div class="pg2">
+        <div class="img">
+            <img src="{% static 'pexels-spencphoto-31828270.jpg' %}" alt="Taxi service in the city">
+        </div>
+        <div class="text">
+            <h1>Your first choice for traveling anywhere</h1>
+            <h4>Reliable rides even in low-cab zones, with trained professional drivers ensuring comfort and safety.
+                Clean, well-maintained vehicles arrive on time, giving you peace of mind and trust wherever you go.
+                Convenient bookings make travel easy, smooth, and dependable always.</h4>
+
+            <div class="notification">
+                <div class="notiglow"></div>
+                <div class="notiborderglow"></div>
+                <div class="notititle">🚕 Trusted Service</div>
+                <div class="notibody">Professional drivers & clean vehicles</div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-icon">📞</div>
+                <div class="contact-text">
+                    <h4>Call Us Now!</h4>
+                    <h2>+91 87673 10597</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: #f8f9fa; padding: 4rem 2rem; text-align: center;">
+        <!-- Section Header -->
+        <div style="margin-bottom: 3rem;">
+            <h3 style="color: #666; font-size: 1.1rem; margin: 0 0 0.5rem 0; font-weight: 500;">Our Best Cars</h3>
+            <h1 style="color: #2c1810; font-size: 2.5rem; margin: 0; font-weight: bold;">What we offer?</h1>
+        </div>
+
+        <div class="out">
+            <div class="cards">
+                <div class="card">
+                    <img src="{% static 'adress-removebg-preview.png' %}" alt="">
+                    <p class="tip">Address Pickup</p>
+                    <p class="second-text">We always pick up our clients on time, 24/7 availability.</p>
+                </div>
+                <div class="card">
+                    <img src="{% static 'air-removebg-preview.png' %}" alt="">
+                    <p class="tip">Airport Transfer</p>
+                    <p class="second-text">GetCab specialized in 24 hours airport transfer service.</p>
+                </div>
+                <div class="card">
+                    <img src="{% static 'map-removebg-preview.png' %}" alt="">
+                    <p class="tip">Long Distance</p>
+                    <p class="second-text">We offer you a long distance taxi service to anywhere.</p>
+                </div>
+                <div class="card">
+                    <img src="{% static 'taxi-removebg-preview.png' %}" alt="">
+                    <p class="tip">Taxi Tours</p>
+                    <p class="second-text">We offer taxi tours of various durations and complexity.</p>
+                </div>
+            </div>
+        </div>
+
+        <button style="
+            background: linear-gradient(135deg, #FFC107, #FFD54F);
+            color: #2c1810;
+            border: none;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s ease;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            margin-top: 3rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(255, 193, 7, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 193, 7, 0.3)'">
+            View All Services
+        </button>
+    </div>
+
+    <div style="background: oklch(0.96 0 0); padding: 4rem 2rem; text-align: center;">
+        <div style="margin-bottom: 3rem;">
+            <h3 style="color: #666; font-size: 1.1rem; margin: 0 0 0.5rem 0; font-weight: 500;">Our Best Cars</h3>
+            <h1 style="color: #2c1810; font-size: 2.5rem; margin: 0; font-weight: bold;">Choose Taxi</h1>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 3rem;">
+
+            <div style="
+                background: white;
+                border-radius: 12px;
+                padding: 2rem 1.5rem;
+                width: 280px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0, 0, 0, 0.15)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.1)'">
+                <!-- Car Image -->
+                <div style="margin-bottom: 1.5rem;">
+                    <img src="{% static 'taxi-logan-international-airport-noi-bai-international-airport-dacia-logan-taxi-1f1487475517be5777c1149a06363f26.png' %}"
+                        alt="WR 2008 Model" style="width: 100%; height: 120px; object-fit: contain;">
+                </div>
+
+                <h3 style="color: #2c1810; font-size: 1.3rem; font-weight: bold; margin: 0 0 1.5rem 0;">Sujido Plus</h3>
+
+                <div style="margin-bottom: 2rem; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Base Rate:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹4.50</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Per Mile/KM:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹3.50</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #666; font-size: 0.9rem;">Passengers:</span>
+                        <span style="color: #2c1810; font-weight: 600;">4</span>
+                    </div>
+                </div>
+
+                <button style="
+                    background: #2c1810;
+                    color: white;
+                    border: none;
+                    padding: 0.8rem 2rem;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    width: 100%;
+                    transition: all 0.3s ease;
+                    font-size: 0.9rem;
+                " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
+                    Book Taxi
+                </button>
+            </div>
+
+            <div style="
+                background: white;
+                border-radius: 12px;
+                padding: 2rem 1.5rem;
+                width: 280px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0, 0, 0, 0.15)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.1)'">
+
+                <div style="margin-bottom: 1.5rem;">
+                    <img src="{% static 'pngimg.com - taxi_PNG41.png' %}" alt="E Class 2021 Model"
+                        style="width: 100%; height: 120px; object-fit: contain;">
+                </div>
+
+                <h3 style="color: #2c1810; font-size: 1.3rem; font-weight: bold; margin: 0 0 1.5rem 0;">Sujido Mini</h3>
+
+                <div style="margin-bottom: 2rem; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Base Rate:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹6.50</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Per Mile/KM:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹4.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #666; font-size: 0.9rem;">Passengers:</span>
+                        <span style="color: #2c1810; font-weight: 600;">4</span>
+                    </div>
+                </div>
+
+                <button style="
+                    background: #2c1810;
+                    color: white;
+                    border: none;
+                    padding: 0.8rem 2rem;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    width: 100%;
+                    transition: all 0.3s ease;
+                    font-size: 0.9rem;
+                " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
+                    Book Taxi
+                </button>
+            </div>
+
+            <div style="
+                background: white;
+                border-radius: 12px;
+                padding: 2rem 1.5rem;
+                width: 280px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0, 0, 0, 0.15)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.1)'">
+                <!-- Car Image -->
+                <div style="margin-bottom: 1.5rem;">
+                    <img src="{% static 'pngimg.com - taxi_PNG47.png' %}" alt="Vento 2014 Model"
+                        style="width: 100%; height: 120px; object-fit: contain;">
+                </div>
+
+                <h3 style="color: #2c1810; font-size: 1.3rem; font-weight: bold; margin: 0 0 1.5rem 0;">Sujido premium
+                </h3>
+
+                <div style="margin-bottom: 2rem; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Base Rate:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹5.50</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #666; font-size: 0.9rem;">Per Mile/KM:</span>
+                        <span style="color: #2c1810; font-weight: 600;">₹3.50</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #666; font-size: 0.9rem;">Passengers:</span>
+                        <span style="color: #2c1810; font-weight: 600;">4</span>
+                    </div>
+                </div>
+
+                <button style="
+                    background: #2c1810;
+                    color: white;
+                    border: none;
+                    padding: 0.8rem 2rem;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    width: 100%;
+                    transition: all 0.3s ease;
+                    font-size: 0.9rem;
+                " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
+                    Book Taxi
+                </button>
+            </div>
+        </div>
+
+        <button style="
+            background: linear-gradient(135deg, #FFC107, #FFD54F);
+            color: #2c1810;
+            border: none;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s ease;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            margin-top: 3rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(255, 193, 7, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 193, 7, 0.3)'">
+            View All Services
+        </button>
+    </div>
+
+    <section id="reviews" class="testimonials">
+        <div class="container">
+            <div class="testimonials-grid">
+
+                <div>
+                    <img src="{% static 'pexels-cottonbro-4606338.jpg' %}" alt="Happy customer using taxi service"
+                        class="testimonial-image">
+
+                    <h2 class="testimonial-title">Incredible Destinations at Incredible Deals</h2>
+
+                    <p class="testimonial-description">
+                        A cab booking system allows users to easily book rides by entering pick-up and drop-off
+                        locations and selecting vehicle types. It matches riders with nearby drivers, provides real-time
+                        tracking, and estimates fare costs. The system also supports secure payment options and enables
+                        users to rate and review their ride experience.
+                    </p>
+
+                    <div class="features-icons">
+                        <div class="feature-icon-item">
+                            <div class="icon-circle">🕐</div>
+                            <h3 class="icon-title">Surge Free Guarantee</h3>
+                            <p class="icon-description">No surge pricing during peak hours</p>
+                        </div>
+                        <div class="feature-icon-item">
+                            <div class="icon-circle">📅</div>
+                            <h3 class="icon-title">Book for Now or Later</h3>
+                            <p class="icon-description">Schedule rides in advance or book instantly</p>
+                        </div>
+                        <div class="feature-icon-item">
+                            <div class="icon-circle">💳</div>
+                            <h3 class="icon-title">Cashless Payment</h3>
+                            <p class="icon-description">Secure digital payment options</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="testimonial-card"
+                        style="background-image: url({% static 'pexels-pixabay-302718.jpg' %}); background-size:cover">
+                        <h3 class="testimonial-card-title">What our customers are saying</h3>
+
+                        <div class="testimonial-quote">
+                            <p class="quote-text">
+                                The cab booking system provides a convenient and user-friendly platform for customers to
+                                book rides swiftly and effortlessly. It combines a clean interface with essential
+                                features to ensure a smooth ride-hailing experience.
+                            </p>
+
+                            <div class="quote-author">
+                                <img src="{% static 'pexels-ab-pixels-ng-33844633.jpg' %}" alt="Jonathan Doe" class="author-image">
+                                <div>
+                                    <div class="author-name">Om Salvi</div>
+                                    <div class="author-title">Founder & CEO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="call-action">
+                        <div class="call-icon">📞</div>
+                        <div>
+                            <div class="call-text">Call Us Now!</div>
+                            <div class="call-number">+91 87673 10597</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div
+        style="display: flex; justify-content: center; align-items: flex-start; gap: 80px; padding: 30px 0 40px 0; max-width: 1200px; margin: auto;">
+
+        <div style="width: 400px;">
+            <h4 style="color:#1a1a1a; font-weight:600; margin:0 0 14px 0; letter-spacing: 0.03em;">Taxi benefit list
+            </h4>
+            <h2 style="color:#222; font-weight:800; margin:0 0 26px 0; font-size:2.2em; letter-spacing: 0.03em;">Why
+                Choose Us</h2>
+            <p style="color:#444; line-height:1.75; font-size:1.05em; margin-bottom:38px; max-width: 380px;">
+                Posuere tellus imperdiet facilisis. Curabitur vuacibings telluseu semper nunc finibus placerat.
+                Suspendis and potenti. Praesent vel sem in sem.
+            </p>
+
+            <div style="display:flex; align-items:center; margin-bottom:32px;">
+                <span
+                    style="display:inline-block; width:46px; height:46px; background:#f3f3f3; border-radius:12px; margin-right:18px; text-align:center; font-size:30px; line-height:46px;">🛡️</span>
+                <div>
+                    <div style="font-weight:700; color:#222; font-size:1.05em; margin-bottom:6px;">Safety Guarantee
+                    </div>
+                    <div style="color:#555; font-size:1em;">Posuere tellus imperdiet facilisis. Curabit vuacibings
+                        telluseu semper.</div>
+                </div>
+            </div>
+
+            <div style="display:flex; align-items:center; margin-bottom:32px;">
+                <span
+                    style="display:inline-block; width:46px; height:46px; background:#f3f3f3; border-radius:12px; margin-right:18px; text-align:center; font-size:30px; line-height:46px;">👨‍✈️</span>
+                <div>
+                    <div style="font-weight:700; color:#222; font-size:1.05em; margin-bottom:6px;">DBS Cleared Drivers
+                    </div>
+                    <div style="color:#555; font-size:1em;">Posuere tellus imperdiet facilisis. Curabit vuacibings
+                        telluseu semper.</div>
+                </div>
+            </div>
+            <!-- Free Quotation -->
+            <div style="display:flex; align-items:center;">
+                <span
+                    style="display:inline-block; width:46px; height:46px; background:#f3f3f3; border-radius:12px; margin-right:18px; text-align:center; font-size:30px; line-height:46px;">📄</span>
+                <div>
+                    <div style="font-weight:700; color:#222; font-size:1.05em; margin-bottom:6px;">Free Quotation</div>
+                    <div style="color:#555; font-size:1em;">Posuere tellus imperdiet facilisis. Curabit vuacibings
+                        telluseu semper.</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="width:480px;">
+            <h4 style="color:#1a1a1a; font-weight:600; margin:0 0 14px 0; letter-spacing: 0.03em;">Our all taxi rates
+            </h4>
+            <h2 style="color:#222; font-weight:800; margin:0 0 28px 0; font-size:2.2em; letter-spacing: 0.03em;">Check
+                taxi fares</h2>
+
+            <div
+                style="background: #fff; border-radius:16px; box-shadow:0 14px 36px rgba(0,0,0,0.12); padding:38px; margin-bottom:28px; display:flex; align-items:center; justify-content: space-between;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:14px;">
+                        <span style="font-size:34px;">🚕</span>
+                        <span style="font-weight:700; font-size:1.3em;">Fares</span>
+                    </div>
+                    <div style="margin-top:24px;">
+                        <div style="display:flex; justify-content:space-between; width:260px; font-size:1.05em;">
+                            <span>Initial charge:</span> <span>₹2.50</span>
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; width:260px; margin-top:10px; font-size:1.05em;">
+                            <span>Additional Kilometre:</span> <span>₹0.50</span>
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; width:260px; margin-top:10px; font-size:1.05em;">
+                            <span>Per 2 minutes in stopped traffic:</span> <span>₹0.66</span>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    style="margin-left:30px; background:#111; color:#fff; border-radius:28px; border:none; padding:14px 34px; font-weight:700; font-size:1.1em; cursor:pointer;">Book
+                    Taxi</button>
+            </div>
+
+            <div
+                style="background: #fff; border-radius:16px; box-shadow:0 14px 36px rgba(0,0,0,0.12); padding:38px; display:flex; align-items:center; justify-content: space-between;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:14px;">
+                        <span style="font-size:34px;">🚕</span>
+                        <span style="font-weight:700; font-size:1.3em;">Fares</span>
+                    </div>
+                    <div style="margin-top:24px;">
+                        <div style="display:flex; justify-content:space-between; width:270px; font-size:1.05em;">
+                            <span>One hour of waiting:</span> <span>₹8.00</span>
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; width:270px; margin-top:10px; font-size:1.05em;">
+                            <span>4pm to 8pm weekday surcharge:</span> <span>₹2.00</span>
+                        </div>
+                        <div
+                            style="display:flex; justify-content:space-between; width:270px; margin-top:10px; font-size:1.05em;">
+                            <span>8pm to 6am night surcharge:</span> <span>₹6.00</span>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    style="margin-left:30px; background:#111; color:#fff; border-radius:28px; border:none; padding:14px 34px; font-weight:700; font-size:1.1em; cursor:pointer;">Book
+                    Taxi</button>
+            </div>
+        </div>
+    </div>
+
+    <footer
+        style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white; padding: 3rem 0 1rem 0; margin-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+
+                <div>
+                    <div
+                        style="display: flex; align-items: center; gap: 0.5rem; color: #FFC107; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                        🚕 Sujido
+                    </div>
+                    <p style="color: #cccccc; line-height: 1.6; margin-bottom: 1.5rem;">
+                        Your trusted ride companion. Safe, reliable, and affordable transportation at your fingertips.
+                    </p>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="color: #FFC107; text-decoration: none; font-size: 1.2rem; transition: color 0.3s ease;">📱</a>
+                        <a href="#"
+                            style="color: #FFC107; text-decoration: none; font-size: 1.2rem; transition: color 0.3s ease;">📘</a>
+                        <a href="#"
+                            style="color: #FFC107; text-decoration: none; font-size: 1.2rem; transition: color 0.3s ease;">🐦</a>
+                        <a href="#"
+                            style="color: #FFC107; text-decoration: none; font-size: 1.2rem; transition: color 0.3s ease;">📷</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3
+                        style="color: #FFC107; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; border-bottom: 2px solid #FFC107; padding-bottom: 0.5rem; display: inline-block;">
+                        Quick Links</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Book a
+                                Ride</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Track
+                                Your Ride</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Fare
+                                Calculator</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Driver
+                                Portal</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'"
+                                onmouseout="this.style.color='#cccccc'">Corporate</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3
+                        style="color: #FFC107; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; border-bottom: 2px solid #FFC107; padding-bottom: 0.5rem; display: inline-block;">
+                        Support</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Help
+                                Center</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'"
+                                onmouseout="this.style.color='#cccccc'">Safety</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Lost &
+                                Found</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#cccccc'">Contact
+                                Us</a></li>
+                        <li style="margin-bottom: 0.5rem;"><a href="#"
+                                style="color: #cccccc; text-decoration: none; transition: color 0.3s ease;"
+                                onmouseover="this.style.color='#FFC107'"
+                                onmouseout="this.style.color='#cccccc'">Feedback</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3
+                        style="color: #FFC107; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; border-bottom: 2px solid #FFC107; padding-bottom: 0.5rem; display: inline-block;">
+                        Contact Info</h3>
+                    <div style="color: #cccccc; line-height: 1.8;">
+                        <p style="margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            📞 <span>+1 (555) 123-4567</span>
+                        </p>
+                        <p style="margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            ✉️ <span>support@sujido.com</span>
+                        </p>
+                        <p style="margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            📍 <span>24/7 Service Available</span>
+                        </p>
+                        <div
+                            style="margin-top: 1rem; padding: 1rem; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 3px solid #FFC107;">
+                            <p style="margin: 0; font-size: 0.9rem; color: #FFC107; font-weight: 500;">Download Our App
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                <a href="#"
+                                    style="background: #000; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; text-decoration: none; font-size: 0.8rem;">📱
+                                    App Store</a>
+                                <a href="#"
+                                    style="background: #000; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; text-decoration: none; font-size: 0.8rem;">🤖
+                                    Play Store</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="border-top: 1px solid #444; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <p style="margin: 0; color: #888; font-size: 0.9rem;">
+                    © 2024 Sujido. All rights reserved.
+                </p>
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <a href="#"
+                        style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease;"
+                        onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#888'">Privacy Policy</a>
+                    <a href="#"
+                        style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease;"
+                        onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#888'">Terms of
+                        Service</a>
+                    <a href="#"
+                        style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease;"
+                        onmouseover="this.style.color='#FFC107'" onmouseout="this.style.color='#888'">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script> window.chtlConfig = { chatbotId: "4298118821" } </script>
+<script async data-id="4298118821" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+<script>
+    (function() {
+        var btn = document.getElementById('profileBtn');
+        var menu = document.getElementById('profileMenu');
+        var logout = document.getElementById('logoutBtn');
+        if (!btn || !menu) return;
+
+        function closeMenu() {
+            menu.classList.remove('show');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isOpen = menu.classList.toggle('show');
+            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!menu.classList.contains('show')) return;
+            var target = e.target;
+            if (target === btn || btn.contains(target) || menu.contains(target)) return;
+            closeMenu();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        if (logout) {
+            logout.addEventListener('click', function() {
+                closeMenu();
+                alert('Logged out');
+                // TODO: integrate with real auth logout
+            });
+        }
+    })();
+</script>
+
+<script src="{% static "landing.js" %}"></script>
+</html>
