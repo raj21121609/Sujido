@@ -8,6 +8,7 @@ import requests
 import random
 import smtplib
 from email.mime.text import MIMEText
+from .models import *
 
 # Home view with signup and login handling
 def home(request):
@@ -205,10 +206,11 @@ def generate_otp():
 
 
 def send_email_otp(name, email, otp):
-    sender = "124raj2112@sjcem.edu.in"
-    sender_password = "wrhgwdokogtikzjq"  # Secure properly in production
+    try:
+        sender = "124raj2112@sjcem.edu.in"
+        sender_password = "wrhgwdokogtikzjq"  # Secure properly in production
 
-    body = f"""
+        body = f"""
 Dear {name},
 
 Thank you for signing up with us. To verify your email, please enter this One Time Password (OTP):
@@ -220,16 +222,20 @@ This OTP is valid for 10 minutes.
 Best regards,
 Sujido cabs
 """
-    msg = MIMEText(body, "plain")
-    msg["Subject"] = "Your OTP Verification Code"
-    msg["From"] = sender
-    msg["To"] = email
+        msg = MIMEText(body, "plain")
+        msg["Subject"] = "Your OTP Verification Code"
+        msg["From"] = sender
+        msg["To"] = email
 
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login(sender, sender_password)
-    server.sendmail(sender, email, msg.as_string())
-    server.quit()
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender, sender_password)
+        server.sendmail(sender, email, msg.as_string())
+        server.quit()
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+        return False
 
 
 def otp(request):
@@ -242,8 +248,15 @@ def otp(request):
 
         otp_code = generate_otp()
         request.session['otp'] = str(otp_code)
-        send_email_otp(name, email, otp_code)
-        return render(request, 'otp_template.html')
+        
+        # Try to send email and handle failure
+        email_sent = send_email_otp(name, email, otp_code)
+        if not email_sent:
+            messages.error(request, "Failed to send OTP email. Please check your email address and try again.")
+            return redirect('/register')
+            
+        messages.success(request, f"OTP sent successfully to {email}")
+        return render(request, 'otp.html')
 
     elif request.method == 'POST':
         user_otp = request.POST.get('otp')
@@ -268,4 +281,10 @@ def otp(request):
 
         else:
             messages.error(request, "Invalid OTP entered. Please try again.")
-            return render(request, 'otp_template.html')
+            return render(request, 'otp.html')
+
+def wallet(request):
+    if request.user .is_authenticated:
+        curr_user = request.user
+        all_info = info.objects.filter(user=curr_user)
+    return render(request,'wallet.html',{'w_info':all_info})

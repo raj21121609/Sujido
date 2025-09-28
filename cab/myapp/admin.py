@@ -3,6 +3,8 @@ from .models import info
 
 # Register your models here.
 
-@admin.register
-class infoAdmin(admin.ModelAdmin):
-    list_display=['wallet_amount','user']
+admin.site.register(info)
+
+# @admin.register
+# class infoAdmin(admin.ModelAdmin):
+#     list_display=['wallet_amount','user']

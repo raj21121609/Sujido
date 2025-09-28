@@ -802,20 +802,21 @@ body { margin: 0; padding: 0; }
             position: relative;
         }
         .profile-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.15s ease, box-shadow 0.2s ease;
-        }
+    width: 40px;
+    height: 40px;
+    border-radius: 10px; /* Changed from 50% to 10px for rounded square */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
         .profile-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 8px 18px rgba(0,0,0,0.25);

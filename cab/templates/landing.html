@@ -27,9 +27,9 @@
                 <li><a href="#" class="nav-link">Reviews</a></li>
                 <li><a href="#" class="nav-link">Contacts</a></li>
             </ul>
-            <div class="profile">
-                <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false" title="Profile">
-                    <img src="{% static 'icons8-logout-50.png' %}" alt="Profile">
+            <div class="profile" style='margin-left:10px'>
+                <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false" title="Profile" onclick="window.location='{% url 'wallet' %}'">
+                    <img src="{% static 'wallet.png' %}" alt="Profile">
                 </button>
                 <div id="profileMenu" class="profile-menu" role="menu" aria-labelledby="profileBtn">
                     <button class="logout-btn" role="menuitem" id="logoutBtn">Log out</button>

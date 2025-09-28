@@ -6,5 +6,6 @@ urlpatterns = [
     path('signOut/',views.signout,name = 'signout'),
     path('book/',views.book,name='book'),
     path('api/autocomplete/',views.autocomplete_address,name='autocomplete'),
-    path('otp/',views.otp , name = 'otp')
+    path('otp/',views.otp , name = 'otp'),
+    path('wallet/',views.wallet , name ='wallet')
 ]
