@@ -170,7 +170,7 @@ const apiKey = '5063a03469dc4e8ebc294cbe8ecf41ec';
             });
         });
 
-        bookButton.addEventListener('click', function(e) {
+        bookButton.addEventListener('click', async function(e) {
             e.preventDefault();
             
             const pickup = document.getElementById('pickup').value;
@@ -184,9 +184,62 @@ const apiKey = '5063a03469dc4e8ebc294cbe8ecf41ec';
 
             const vehicleType = selectedVehicle.value;
             const pricePerKm = vehiclePricing[vehicleType];
-            const estimatedDistance = Math.random() * 10 + 2;
-            const totalPrice = Math.round(estimatedDistance * pricePerKm * 100) / 100; 
-            const estimatedTime = Math.round(estimatedDistance * 2 + Math.random() * 10); 
+
+            // Ensure we have coordinates (fallback to geocoding if user typed without selecting suggestion)
+            async function ensureCoords() {
+                let p = pickupCoords;
+                let d = dropCoords;
+                if (!p) {
+                    const c = await getCoordinatesFromAddress(pickup);
+                    if (c) p = [c.lat, c.lon];
+                }
+                if (!d) {
+                    const c = await getCoordinatesFromAddress(drop);
+                    if (c) d = [c.lat, c.lon];
+                }
+                return { p, d };
+            }
+
+            async function getDistanceTimeMetersSeconds(p, d) {
+                try {
+                    const body = {
+                        mode: 'drive',
+                        sources: [{ location: p }],
+                        targets: [{ location: d }]
+                    };
+                    const res = await fetch(`https://api.geoapify.com/v1/routematrix?apiKey=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (!res.ok) throw new Error('Route API error');
+                    const data = await res.json();
+                    const meters = data && data.distances && data.distances[0] && data.distances[0][0];
+                    const seconds = data && data.times && data.times[0] && data.times[0][0];
+                    if (typeof meters !== 'number' || typeof seconds !== 'number') throw new Error('Invalid route response');
+                    return { meters, seconds };
+                } catch (err) {
+                    console.error('Route error:', err);
+                    return null;
+                }
+            }
+
+            const { p, d } = await ensureCoords();
+            if (!p || !d) {
+                alert('Could not determine locations. Please select valid addresses.');
+                return;
+            }
+
+            const route = await getDistanceTimeMetersSeconds(p, d);
+            if (!route) {
+                alert('Unable to calculate route. Please try again.');
+                return;
+            }
+
+            const distanceKm = Math.round((route.meters / 1000) * 100) / 100; // 2 decimals
+            const timeMin = Math.round(route.seconds / 60);
+            const totalPrice = Math.round(distanceKm * pricePerKm * 100) / 100;
+            const estimatedTime = timeMin;
 
             document.getElementById('pickupSummary').textContent = pickup;
             document.getElementById('dropSummary').textContent = drop;

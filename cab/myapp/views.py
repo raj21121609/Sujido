@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.conf import settings
+from django.core.mail import send_mail
 import requests
 import random
 import smtplib
@@ -135,6 +137,11 @@ def book(request):
 
                         if vehicle in vehicle_pricing:
                             cost = round(distance * vehicle_pricing[vehicle], 2)
+                            if request.user .is_authenticated:
+                                current_user = request.user
+                                amount = info.objects.get(user = current_user)
+                                amount.wallet_amount = amount.wallet_amount - cost
+                                amount.save()
                         else:
                             error_message = "Invalid vehicle selection."
 
@@ -206,11 +213,8 @@ def generate_otp():
 
 
 def send_email_otp(name, email, otp):
-    try:
-        sender = "124raj2112@sjcem.edu.in"
-        sender_password = "wrhgwdokogtikzjq"  # Secure properly in production
-
-        body = f"""
+    subject = "Your OTP Verification Code"
+    body = f"""
 Dear {name},
 
 Thank you for signing up with us. To verify your email, please enter this One Time Password (OTP):
@@ -222,17 +226,15 @@ This OTP is valid for 10 minutes.
 Best regards,
 Sujido cabs
 """
-        msg = MIMEText(body, "plain")
-        msg["Subject"] = "Your OTP Verification Code"
-        msg["From"] = sender
-        msg["To"] = email
-
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(sender, sender_password)
-        server.sendmail(sender, email, msg.as_string())
-        server.quit()
-        return True
+    try:
+        sent = send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+            fail_silently=False,
+        )
+        return sent > 0
     except Exception as e:
         print(f"Error sending email: {str(e)}")
         return False
