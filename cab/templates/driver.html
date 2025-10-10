@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard | Cab Booking</title>
+    <meta name="description" content="Professional driver dashboard for cab booking system with real-time status updates">
+    <link rel="stylesheet" href="{% static 'css/driver.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="driver-info">
+                    <h1>Welcome back, John!</h1>
+                    <p>CAB-2024-1337 • 4.8★ Rating</p>
+                </div>
+                <div class="status-toggle">
+                    <span id="statusText">Active</span>
+                    <label class="switch">
+                        <input type="checkbox" id="statusToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </header>
+
+        <!-- Status Banner -->
+        <div class="status-banner" id="statusBanner">
+            <p id="bannerText">🟢 You're online and ready to accept rides</p>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Today's Earnings</span>
+                        <span class="badge badge-success">+12%</span>
+                    </div>
+                    <div class="stat-value">$324.50</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Trips Completed</span>
+                        <span class="badge badge-primary">14 trips</span>
+                    </div>
+                    <div class="stat-value">14</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Rating</span>
+                        <span class="badge badge-success">Excellent</span>
+                    </div>
+                    <div class="stat-value">4.8 ★</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Hours Online</span>
+                        <span class="badge badge-primary">Active</span>
+                    </div>
+                    <div class="stat-value">8.5h</div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="map-container">
+                <div class="map-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <h2>Current Location</h2>
+                </div>
+                <div class="map-area">
+                    <div class="map-grid"></div>
+                    <div class="location-pin">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="location-info">
+                    <p>You are currently at</p>
+                    <p class="address">Downtown, 5th Avenue & Main Street</p>
+                </div>
+            </div>
+
+            <!-- New Ride Request (only shown when active)
+            <div class="ride-request" id="rideRequest">
+                <h2>🚗 New Ride Request!</h2>
+                <div class="rider-info">
+                    <div class="rider-avatar">👤</div>
+                    <div class="rider-details">
+                        <h3>Sarah Johnson</h3>
+                        <div class="rider-rating">
+                            <span>⭐ 4.9</span>
+                            <span>• 156 trips</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-details">
+                    <div class="route-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="10" r="3"></circle>
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path>
+                        </svg>
+                        <div class="route-info">
+                            <p>Pickup Location</p>
+                            <p>Central Station, Platform 3</p>
+                        </div>
+                    </div>
+                    <div class="route-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <div class="route-info">
+                            <p>Drop-off Location</p>
+                            <p>Airport Terminal 2, Gate C</p>
+                        </div>
+                    </div>
+                    <div class="route-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <div class="route-info">
+                            <p>Estimated Duration</p>
+                            <p>25 minutes • 12.5 km</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ride-actions">
+                    <button class="btn btn-outline">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Decline
+                    </button>
+                    <button class="btn btn-white">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Accept Ride
+                    </button>
+                </div>
+            </div> -->
+
+            <!-- Recent Trips -->
+            <div class="recent-trips">
+                <div class="section-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <h2>Recent Trips</h2>
+                </div>
+                <div class="trip-item">
+                    <div class="trip-info">
+                        <p class="trip-route">Downtown → Airport</p>
+                        <p class="trip-time">2 hours ago • 12.5 km</p>
+                    </div>
+                    <div class="trip-amount">$45.00</div>
+                </div>
+                <div class="trip-item">
+                    <div class="trip-info">
+                        <p class="trip-route">Mall → City Center</p>
+                        <p class="trip-time">4 hours ago • 8.2 km</p>
+                    </div>
+                    <div class="trip-amount">$28.50</div>
+                </div>
+                <div class="trip-item">
+                    <div class="trip-info">
+                        <p class="trip-route">Suburb → Downtown</p>
+                        <p class="trip-time">5 hours ago • 15.8 km</p>
+                    </div>
+                    <div class="trip-amount">$52.00</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Contact Support
+                </button>
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    View Earnings
+                </button>
+            </div>
+        </main>
+    </div>
+<script src="{% static "js/driver.js" %}"></script>
+</body>
+</html>

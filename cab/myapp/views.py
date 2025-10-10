@@ -1,49 +1,106 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.conf import settings
-from django.core.mail import send_mail
 import requests
-import random
-import smtplib
-from email.mime.text import MIMEText
-from .models import *
+from .models import Info
 
-# Home view with signup and login handling
-def home(request):
+User = get_user_model()
+
+
+# CUSTOMER SIGNUP/LOGIN
+def customer_view(request):
     if request.method == 'POST':
-        if request.POST.get('sign') == 'f1':
+        if request.POST.get('sign') == 'f1':  # Signup form
             name = request.POST.get('name')
             email = request.POST.get('email')
             password = request.POST.get('password')
+            role = 'customer'
 
-            request.session['email'] = email
-            request.session['name'] = name
-            request.session['password'] = password
+            if not (name and email and password):
+                messages.error(request, "Please provide name, email and password.")
+                return render(request, 'signup_login.html')
 
-            return render(request,'otp.html')
+            if User.objects.filter(username=name).exists():
+                messages.error(request, "Username already taken.")
+                return render(request, 'signup_login.html')
 
-        elif request.POST.get('sign') == 'f2':
+            try:
+                user = User.objects.create_user(username=name, email=email, password=password, role=role)
+                Info.objects.create(user=user, wallet_amount=0)
+                messages.success(request, "Account created successfully.")
+            except Exception as e:
+                messages.error(request, f"Error: {str(e)}")
+
+        elif request.POST.get('sign') == 'f2':  # Login form
             username = request.POST.get('username')
             password = request.POST.get('password2')
 
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request, user)
-                messages.success(request, "Logged in successfully")
-                return render(request, 'landing.html', {'userr': username})
+                if hasattr(user, 'role') and user.role == 'customer':
+                    login(request, user)
+                    messages.success(request, "Logged in successfully as Customer")
+                    return redirect('landing')
+                else:
+                    messages.error(request, "This login is for customers only.")
             else:
-                messages.error(request, "Unable to log in with provided credentials")
+                messages.error(request, "Invalid credentials")
 
-    return render(request, 'signup_login.html')
+    return render(request, 'signup_login.html', {'form_action': 'costumer_home'})
+
+
+
+# DRIVER SIGNUP/LOGIN
+def driver_view(request):
+    if request.method == 'POST':
+        if request.POST.get('sign') == 'f1':  # Signup
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            role = 'driver'
+
+            if not (name and email and password):
+                messages.error(request, "Please provide all details.")
+                return render(request, 'signup_login.html')
+
+            if User.objects.filter(username=name).exists():
+                messages.error(request, "Username already taken.")
+                return render(request, 'signup_login.html')
+
+            try:
+                user = User.objects.create_user(username=name, email=email, password=password, role=role)
+                Info.objects.create(user=user, wallet_amount=0)
+                messages.success(request, "Driver account created successfully.")
+            except Exception as e:
+                messages.error(request, f"Error: {str(e)}")
+
+        elif request.POST.get('sign') == 'f2':  # Login
+            username = request.POST.get('username')
+            password = request.POST.get('password2')
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                if hasattr(user, 'role') and user.role == 'driver':
+                    login(request, user)
+                    messages.success(request, "Logged in successfully as Driver")
+                    return redirect('driver_interface')
+                else:
+                    messages.error(request, "This login is for drivers only.")
+            else:
+                messages.error(request, "Invalid credentials")
+
+    return render(request, 'signup_login.html', {'form_action': 'driver_home'})
+
 
 
 def landing(request):
     return render(request, 'landing.html')
 
+def driver_interface(request):
+    return render(request,'driver.html')
 
 def signout(request):
     logout(request)
@@ -60,7 +117,7 @@ def book(request):
         pickup = request.POST.get('pickup', '').strip()
         drop = request.POST.get('drop', '').strip()
         vehicle = request.POST.get('vehicle', '')
-        api_key = "5063a03469dc4e8ebc294cbe8ecf41ec"
+        api_key = "0263ba4784924510a458c8ec9490ca02"
 
         if not pickup or not drop or not vehicle:
             error_message = "Please fill in all fields and select a vehicle."
@@ -139,7 +196,7 @@ def book(request):
                             cost = round(distance * vehicle_pricing[vehicle], 2)
                             if request.user .is_authenticated:
                                 current_user = request.user
-                                amount = info.objects.get(user = current_user)
+                                amount = Info.objects.get(user = current_user)
                                 amount.wallet_amount = amount.wallet_amount - cost
                                 amount.save()
                         else:
@@ -208,85 +265,9 @@ def autocomplete_address(request):
     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
-def generate_otp():
-    return random.randint(1000, 9999)
-
-
-def send_email_otp(name, email, otp):
-    subject = "Your OTP Verification Code"
-    body = f"""
-Dear {name},
-
-Thank you for signing up with us. To verify your email, please enter this One Time Password (OTP):
-
-{otp}
-
-This OTP is valid for 10 minutes.
-
-Best regards,
-Sujido cabs
-"""
-    try:
-        sent = send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
-        )
-        return sent > 0
-    except Exception as e:
-        print(f"Error sending email: {str(e)}")
-        return False
-
-
-def otp(request):
-    if request.method == 'GET':
-        name = request.session.get('name')
-        email = request.session.get('email')
-        if not name or not email:
-            messages.error(request, "Session expired or invalid access.")
-            return redirect('/register')
-
-        otp_code = generate_otp()
-        request.session['otp'] = str(otp_code)
-        
-        # Try to send email and handle failure
-        email_sent = send_email_otp(name, email, otp_code)
-        if not email_sent:
-            messages.error(request, "Failed to send OTP email. Please check your email address and try again.")
-            return redirect('/register')
-            
-        messages.success(request, f"OTP sent successfully to {email}")
-        return render(request, 'otp.html')
-
-    elif request.method == 'POST':
-        user_otp = request.POST.get('otp')
-        actual_otp = request.session.get('otp')
-
-        if user_otp == actual_otp:
-            name = request.session.get('name')
-            email = request.session.get('email')
-            password = request.session.get('password')
-            if not (name and email and password):
-                messages.error(request, "Session data missing. Please register again.")
-                return redirect('/register')
-
-            user = User.objects.create_user(username=name, email=email, password=password)
-            user.save()
-            messages.success(request, "User has been created successfully!")
-            try:
-                del request.session['otp']
-            except KeyError:
-                pass
-            return redirect('/register')
-
-        else:
-            messages.error(request, "Invalid OTP entered. Please try again.")
-            return render(request, 'otp.html')
 
 def wallet(request):
     if request.user .is_authenticated:
         curr_user = request.user
-        all_info = info.objects.filter(user=curr_user)
+        all_info = Info.objects.filter(user=curr_user)
     return render(request,'wallet.html',{'w_info':all_info})

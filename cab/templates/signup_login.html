@@ -20,7 +20,7 @@
 
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-		<form action="/register/" method='POST'>
+		<form action="{% url form_action %}" method='POST'>
 			{% csrf_token %}
 			<h1>Create Account</h1>
 			<div class="social-container">
@@ -36,7 +36,7 @@
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form action="/register/" method='POST'>
+		<form action="{% url form_action %}"method='POST'>
 			{% csrf_token %}
 			<h1>Sign in</h1>
 			<div class="social-container">
@@ -66,7 +66,6 @@
 		</div>
 	</div>
 </div>
-
 <script src="{% static "js/signup_login.js" %}"></script>
 </body>
 </html>

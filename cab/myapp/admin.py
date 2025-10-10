@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import info
+from .models import CustomUser, Info
 
-# Register your models here.
-
-admin.site.register(info)
-
-# @admin.register
-# class infoAdmin(admin.ModelAdmin):
-#     list_display=['wallet_amount','user']
+admin.site.register(CustomUser)
+admin.site.register(Info)

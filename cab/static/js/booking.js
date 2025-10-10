@@ -29,17 +29,29 @@ const apiKey = '5063a03469dc4e8ebc294cbe8ecf41ec';
 
     async function getCoordinatesFromAddress(address) {
         try {
-            const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(address)}&apiKey=${apiKey}&limit=1`);
+            console.log('Geocoding address:', address);
+            const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(address)}&apiKey=${apiKey}&limit=1&filter=countrycode:in`);
+            
+            if (!response.ok) {
+                console.error('Geocoding API error:', response.status, response.statusText);
+                return null;
+            }
+            
             const data = await response.json();
+            console.log('Geocoding response:', data);
             
             if (data.features && data.features.length > 0) {
                 const feature = data.features[0];
-                return {
+                const result = {
                     lat: feature.properties.lat,
                     lon: feature.properties.lon,
                     address: feature.properties.formatted
                 };
+                console.log('Geocoding success:', result);
+                return result;
             }
+            
+            console.log('No geocoding results found for:', address);
             return null;
         } catch (error) {
             console.error('Error getting coordinates:', error);
@@ -189,14 +201,30 @@ const apiKey = '5063a03469dc4e8ebc294cbe8ecf41ec';
             async function ensureCoords() {
                 let p = pickupCoords;
                 let d = dropCoords;
+                
+                // Always try to get coordinates for both locations
                 if (!p) {
+                    console.log('Getting coordinates for pickup:', pickup);
                     const c = await getCoordinatesFromAddress(pickup);
-                    if (c) p = [c.lat, c.lon];
+                    if (c) {
+                        p = [c.lat, c.lon];
+                        console.log('Got pickup coordinates:', p);
+                    } else {
+                        console.error('Failed to get pickup coordinates');
+                    }
                 }
+                
                 if (!d) {
+                    console.log('Getting coordinates for drop:', drop);
                     const c = await getCoordinatesFromAddress(drop);
-                    if (c) d = [c.lat, c.lon];
+                    if (c) {
+                        d = [c.lat, c.lon];
+                        console.log('Got drop coordinates:', d);
+                    } else {
+                        console.error('Failed to get drop coordinates');
+                    }
                 }
+                
                 return { p, d };
             }
 
@@ -226,7 +254,7 @@ const apiKey = '5063a03469dc4e8ebc294cbe8ecf41ec';
 
             const { p, d } = await ensureCoords();
             if (!p || !d) {
-                alert('Could not determine locations. Please select valid addresses.');
+                alert('Could not determine locations. Please try using more specific addresses like "Mumbai Airport" or "Delhi Railway Station".');
                 return;
             }
 
