@@ -8,5 +8,5 @@ urlpatterns = [
     path('signOut/',views.signout,name = 'signout'),
     path('book/',views.book,name='book'),
     path('api/autocomplete/',views.autocomplete_address,name='autocomplete'),
-    path('wallet/',views.wallet , name ='wallet')
+    path('wallet/',views.wallet , name ='wallet'),
 ]

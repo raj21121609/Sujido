@@ -602,6 +602,7 @@
         #map {
             height: 100%;
             width: 100%;
+            border-radius: 10px;
         }
 
         .autocomplete-container {
@@ -693,33 +694,3 @@
             font-style: italic;
         }
 
-        .custom-pickup-marker,
-        .custom-drop-marker {
-            background: transparent !important;
-            border: none !important;
-        }
-
-        .custom-pickup-marker div,
-        .custom-drop-marker div {
-            transition: transform 0.2s ease;
-        }
-
-        .custom-pickup-marker:hover div,
-        .custom-drop-marker:hover div {
-            transform: scale(1.1);
-        }
-
-        /* Map popup styles */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-
-        .leaflet-popup-content {
-            margin: 12px 16px;
-            line-height: 1.4;
-        }
-
-        .leaflet-popup-tip {
-            background: white;
-        }

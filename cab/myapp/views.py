@@ -117,7 +117,7 @@ def book(request):
         pickup = request.POST.get('pickup', '').strip()
         drop = request.POST.get('drop', '').strip()
         vehicle = request.POST.get('vehicle', '')
-        api_key = "0263ba4784924510a458c8ec9490ca02"
+        api_key = "7a5cf21bb0364e67b5c5ad9404234160"
 
         if not pickup or not drop or not vehicle:
             error_message = "Please fill in all fields and select a vehicle."
@@ -217,7 +217,7 @@ def book(request):
 def autocomplete_address(request):
     if request.method == 'GET':
         query = request.GET.get('q', '').strip()
-        api_key = "5063a03469dc4e8ebc294cbe8ecf41ec"
+        api_key = "7a5cf21bb0364e67b5c5ad9404234160"
 
         if not query or len(query) < 2:
             return JsonResponse({'suggestions': []})
@@ -271,3 +271,4 @@ def wallet(request):
         curr_user = request.user
         all_info = Info.objects.filter(user=curr_user)
     return render(request,'wallet.html',{'w_info':all_info})
+

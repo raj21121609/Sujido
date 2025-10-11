@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RideFlow - Modern Cab Booking</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Load MapmyIndia Map SDK -->
+    <script src="https://apis.mapmyindia.com/advancedmaps/v1/9b2d2c23baf46d6aa9bb5cd7e58c5f17/map_load?v=1.5"></script>
     <link rel="stylesheet" href="{% static 'css/booking.css' %}">
 </head>
 <body>
@@ -186,11 +187,11 @@
                     ✅ Confirm Booking
                 </button>
             </div>
+            
         </div>
     </div>
 
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="{% static "js/booking.js" %}"></script>
 
 </body>
