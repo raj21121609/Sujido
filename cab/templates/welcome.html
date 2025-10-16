@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Welcome</title>
+    <style>
+      /* Color System: exactly 5 colors (primary + neutrals + accent) */
+      :root {
+        --bg: #fff9ec;         /* warm off-white background */
+        --text: #1f2937;       /* gray-800 */
+        --muted: #6b7280;      /* gray-500 */
+        --yellow: #f4c430;     /* primary saffron yellow */
+        --yellow-700: #dfa100; /* darker yellow accent */
+      }
+
+      /* Base reset + typography */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: grid;
+        place-items: center;
+        min-height: 100svh;
+        overflow-x: hidden;
+        position: relative;
+        z-index: 0;
+      }
+
+      /* Spline background container */
+      #spline-background {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none; /* let clicks pass through */
+      }
+
+      #spline-background iframe {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+      }
+
+      /* Subtle animated geometric backgrounds using pure CSS (no external assets) */
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -2;
+        opacity: 0.5;
+        mix-blend-mode: multiply;
+      }
+
+      /* Layer 1: dotted grid (yellow), very subtle */
+      body::before {
+        opacity: 0.35;
+        background-size: 28px 28px;
+        background-position: 0 0;
+        background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><circle cx='1.5' cy='1.5' r='1.5' fill='%23F4C430' fill-opacity='0.20'/></svg>");
+        animation: pan-a 24s linear infinite;
+      }
+
+      /* Layer 2: diagonal strokes (text color, very low opacity) */
+      body::after {
+        opacity: 0.25;
+        background-size: 42px 42px;
+        background-position: 0 0;
+        background-image: url("data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='42' height='42' viewBox='0 0 42 42'><defs><pattern id='p' width='42' height='42' patternUnits='userSpaceOnUse' patternTransform='rotate(45 0 0)'><path d='M0 0h42' stroke='%231F2937' stroke-opacity='0.06' stroke-width='2' /></pattern></defs><rect width='42' height='42' fill='url(%23p)'/></svg>");
+        animation: pan-b 36s linear infinite;
+      }
+
+      @keyframes pan-a {
+        0% { background-position: 0 0; }
+        100% { background-position: 140px 0; }
+      }
+      @keyframes pan-b {
+        0% { background-position: 0 0; }
+        100% { background-position: -210px 0; }
+      }
+
+      /* Container: centered, comfortable spacing */
+      .shell {
+        width: min(940px, 92vw);
+        text-align: center;
+        display: grid;
+        gap: 1.75rem;
+        padding: 3.5rem 1.25rem;
+      }
+
+      header {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.875rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 0;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-size: clamp(1.8rem, 4vw + 0.5rem, 3rem);
+        color: var(--text);
+        opacity: 0;
+        transform: translateY(8px);
+        animation: fadeUp 900ms ease-out 120ms forwards;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .tagline {
+        margin: 0 auto;
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.3vw + 0.5rem, 1.125rem);
+        opacity: 0;
+        transform: translateY(6px);
+        animation: fadeUp 900ms ease-out 260ms forwards;
+      }
+
+      /* Choice section */
+      .choice {
+        display: grid;
+        gap: 1rem;
+        justify-items: center;
+        margin-top: 0.5rem;
+      }
+
+      .choice-label {
+        font-size: 0.95rem;
+        color: var(--text);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        opacity: 0;
+        transform: translateY(4px);
+        animation: fadeUp 900ms ease-out 380ms forwards;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: min(560px, 100%);
+        margin-inline: auto;
+        opacity: 0;
+        transform: translateY(4px);
+        animation: fadeUp 900ms ease-out 460ms forwards;
+      }
+
+      @media (min-width: 560px) {
+        .actions {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Buttons (anchor elements styled as buttons, no JS) */
+      .btn {
+        --btn-bg: transparent;
+        --btn-fg: var(--text);
+        --btn-bd: color-mix(in oklab, var(--text) 18%, transparent);
+        --btn-shadow: 0 10px 20px rgba(31, 41, 55, 0.08),
+                      0 2px 6px rgba(31, 41, 55, 0.06);
+        appearance: none;
+        text-decoration: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.95rem 1.15rem;
+        border-radius: 12px;
+        border: 1px solid var(--btn-bd);
+        background: var(--btn-bg);
+        color: var(--btn-fg);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+        box-shadow: none;
+        outline: none;
+      }
+
+      .btn:focus-visible {
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--yellow) 24%, transparent);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        --btn-bg: var(--yellow);
+        --btn-fg: #1a1a1a;
+        --btn-bd: color-mix(in oklab, var(--yellow-700) 64%, transparent);
+        box-shadow: var(--btn-shadow);
+      }
+      .btn-primary:hover {
+        background: var(--yellow-700);
+        border-color: var(--yellow-700);
+      }
+
+      .btn-outline {
+        --btn-bg: transparent;
+        --btn-fg: var(--text);
+        --btn-bd: color-mix(in oklab, var(--text) 24%, transparent);
+      }
+      .btn-outline:hover {
+        border-color: color-mix(in oklab, var(--text) 36%, transparent);
+      }
+
+      /* Footer note */
+      footer {
+        margin-top: 0.25rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        opacity: 0;
+        transform: translateY(4px);
+        animation: fadeUp 900ms ease-out 520ms forwards;
+      }
+
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        body::before, body::after,
+        h1, .tagline, .choice-label, .actions, footer {
+          animation: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Spline embed as a full screen background -->
+    <div id="spline-background">
+      <iframe src="https://my.spline.design/abstractgradientbackground-m5BnPBoIGpFNHKw7SoXZIXd5/" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <main class="shell" role="main" aria-labelledby="welcome-title">
+      <header>
+        <span class="eyebrow">Welcome</span>
+        <h1 id="welcome-title">We’re glad you’re here.</h1>
+        <p class="tagline">
+          Let’s get you where you need to go. Choose your experience to continue.
+        </p>
+      </header>
+
+      <section class="choice" aria-labelledby="choice-heading">
+        <h2 id="choice-heading" class="choice-label">Are you a Driver or a Customer?</h2>
+        <div class="actions" role="group" aria-label="Choose role">
+          <form method="POST" style="display: contents;">
+            {% csrf_token %}
+            <button type="submit" name="role" value="driver" class="btn btn-outline">
+              Driver
+            </button>
+            <button type="submit" name="role" value="customer" class="btn btn-outline">
+              Customer
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <footer>
+        It’s simple, fast, and designed with care.
+      </footer>
+    </main>
+  </body>
+</html>

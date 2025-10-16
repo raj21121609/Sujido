@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
 class Info(models.Model):
     wallet_amount = models.IntegerField(default=0)
     user = models.ForeignKey("myapp.CustomUser", on_delete=models.CASCADE)
+    #distance = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.username} - ₹{self.wallet_amount}"

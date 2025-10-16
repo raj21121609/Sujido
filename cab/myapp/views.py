@@ -9,6 +9,13 @@ from .models import Info
 
 User = get_user_model()
 
+def welcome(request):
+    if request.method == 'POST':
+        role = request.POST.get('role')
+        role_redirect = {'driver': 'driver_home', 'customer': 'costumer_home'}
+        return redirect(role_redirect.get(role, 'costumer_home'))
+    return render(request, 'welcome.html')
+
 
 # CUSTOMER SIGNUP/LOGIN
 def customer_view(request):
@@ -21,11 +28,11 @@ def customer_view(request):
 
             if not (name and email and password):
                 messages.error(request, "Please provide name, email and password.")
-                return render(request, 'signup_login.html')
+                return render(request, 'signup_login.html', {'form_action': 'costumer_home'})
 
             if User.objects.filter(username=name).exists():
                 messages.error(request, "Username already taken.")
-                return render(request, 'signup_login.html')
+                return render(request, 'signup_login.html', {'form_action': 'costumer_home'})
 
             try:
                 user = User.objects.create_user(username=name, email=email, password=password, role=role)
@@ -52,7 +59,6 @@ def customer_view(request):
     return render(request, 'signup_login.html', {'form_action': 'costumer_home'})
 
 
-
 # DRIVER SIGNUP/LOGIN
 def driver_view(request):
     if request.method == 'POST':
@@ -64,11 +70,11 @@ def driver_view(request):
 
             if not (name and email and password):
                 messages.error(request, "Please provide all details.")
-                return render(request, 'signup_login.html')
+                return render(request, 'signup_login.html', {'form_action': 'driver_home'})
 
             if User.objects.filter(username=name).exists():
                 messages.error(request, "Username already taken.")
-                return render(request, 'signup_login.html')
+                return render(request, 'signup_login.html', {'form_action': 'driver_home'})
 
             try:
                 user = User.objects.create_user(username=name, email=email, password=password, role=role)
@@ -95,23 +101,32 @@ def driver_view(request):
     return render(request, 'signup_login.html', {'form_action': 'driver_home'})
 
 
-
 def landing(request):
     return render(request, 'landing.html')
 
+
 def driver_interface(request):
-    return render(request,'driver.html')
+    return render(request, 'driver.html')
+
 
 def signout(request):
     logout(request)
     return redirect('/register')
 
 
+import requests
+
 def book(request):
     cost = 0
     distance = 0
     time = 0
     error_message = None
+
+    vehicle_pricing = {
+        'sujido-mini': 4.0,      # ₹4 per km
+        'sujido-plus': 5.0,      # ₹5 per km
+        'sujido-premium': 6.0    # ₹6 per km
+    }
 
     if request.method == 'POST':
         pickup = request.POST.get('pickup', '').strip()
@@ -123,28 +138,28 @@ def book(request):
             error_message = "Please fill in all fields and select a vehicle."
         else:
             try:
-                params1 = {"text": pickup, "apiKey": api_key}
-                params2 = {"text": drop, "apiKey": api_key}
-
-                def get_coordinates(param):
-                    url = 'https://api.geoapify.com/v1/geocode/search'
+                # MapmyIndia Geocoding API
+                def get_coordinates(address, api_key):
+                    url = f'https://apis.mapmyindia.com/advancedmaps/v1/{api_key}/geo_code'
+                    params = {'addr': address}
                     try:
-                        response = requests.get(url, params=param, timeout=10)
-                        if response.status_code == 200:
-                            data = response.json()
-                            if data.get('features') and len(data['features']) > 0:
-                                lon = data['features'][0]['properties']['lon']
-                                lat = data['features'][0]['properties']['lat']
+                        resp = requests.get(url, params=params, timeout=10)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            results = data.get('results', [])
+                            if results:
+                                lat = float(results[0]['lat'])
+                                lon = float(results[0]['lng'])
                                 return lat, lon, None
                             else:
                                 return None, None, "Location not found. Please check the address."
                         else:
-                            return None, None, f"Geocoding API error: {response.status_code}"
+                            return None, None, f"Geocoding API error: {resp.status_code}"
                     except requests.RequestException as e:
                         return None, None, f"Network error: {str(e)}"
 
-                lat_pickup, lon_pickup, error1 = get_coordinates(params1)
-                lat_drop, lon_drop, error2 = get_coordinates(params2)
+                lat_pickup, lon_pickup, error1 = get_coordinates(pickup, api_key)
+                lat_drop, lon_drop, error2 = get_coordinates(drop, api_key)
 
                 if error1:
                     error_message = f"Pickup location error: {error1}"
@@ -154,49 +169,43 @@ def book(request):
                     pickup_wp = [lat_pickup, lon_pickup]
                     drop_wp = [lat_drop, lon_drop]
 
-                    def get_distance_time(pickup_wp, drop_wp):
-                        url = 'https://api.geoapify.com/v1/routematrix'
-                        headers = {'Content-Type': 'application/json'}
-                        params = {"apiKey": api_key}
-                        body = {
-                            "mode": "drive",
-                            "sources": [{"location": pickup_wp}],
-                            "targets": [{"location": drop_wp}]
+                    # MapmyIndia Distance Matrix API
+                    def get_distance_time(pickup_wp, drop_wp, api_key):
+                        url = f'https://apis.mapmyindia.com/advancedmaps/v1/{api_key}/distance'
+                        params = {
+                            'center': f"{pickup_wp[0]},{pickup_wp[1]}",
+                            'pts': f"{drop_wp[0]},{drop_wp[1]}",
+                            'rtype': 0
                         }
                         try:
-                            response = requests.post(url, headers=headers, params=params, json=body, timeout=10)
-                            if response.status_code == 200:
-                                data = response.json()
-                                if "distances" in data and "times" in data:
-                                    distance_meters = data["distances"][0][0]
-                                    time_seconds = data["times"][0][0]
+                            resp = requests.get(url, params=params, timeout=10)
+                            if resp.status_code == 200:
+                                data = resp.json()
+                                results = data.get('results', [])
+                                if results:
+                                    distance_meters = float(results[0]['distance'])
+                                    time_seconds = float(results[0]['duration'])
                                     return distance_meters, time_seconds, None
                                 else:
                                     return None, None, "Route calculation failed. Please try different locations."
                             else:
-                                return None, None, f"Route API error: {response.status_code}"
+                                return None, None, f"Route API error: {resp.status_code}"
                         except requests.RequestException as e:
                             return None, None, f"Network error: {str(e)}"
 
-                    distance_meters, time_seconds, route_error = get_distance_time(pickup_wp, drop_wp)
+                    distance_meters, time_seconds, route_error = get_distance_time(pickup_wp, drop_wp, api_key)
 
                     if route_error:
                         error_message = route_error
                     else:
                         distance = round(distance_meters / 1000, 2)
                         time = round(time_seconds / 60, 1)
-
-                        vehicle_pricing = {
-                            'sujido-mini': 4.0,      # ₹4 per km
-                            'sujido-plus': 5.0,      # ₹5 per km  
-                            'sujido-premium': 6.0    # ₹6 per km
-                        }
-
+                        # Wallet amount calculation
                         if vehicle in vehicle_pricing:
-                            cost = round(distance * vehicle_pricing[vehicle], 2)
-                            if request.user .is_authenticated:
+                            cost = round(distance * vehicle_pricing.get(vehicle, 0), 2)
+                            if request.user.is_authenticated:
                                 current_user = request.user
-                                amount = Info.objects.get(user = current_user)
+                                amount = Info.objects.get(user=current_user)
                                 amount.wallet_amount = amount.wallet_amount - cost
                                 amount.save()
                         else:
@@ -206,10 +215,10 @@ def book(request):
                 error_message = f"An unexpected error occurred: {str(e)}"
 
     return render(request, 'booking.html', {
-       'cost': cost,
-       'time': time,
-       'distance': distance,
-       'error_message': error_message
+        'cost': cost,
+        'time': time,
+        'distance': distance,
+        'error_message': error_message
     })
 
 
@@ -236,22 +245,16 @@ def autocomplete_address(request):
 
             if response.status_code == 200:
                 data = response.json()
-                suggestions = []
-
-                if 'features' in data:
-                    for feature in data['features']:
-                        properties = feature.get('properties', {})
-                        suggestion = {
-                            'text': properties.get('formatted', ''),
-                            'address': properties.get('address_line1', ''),
-                            'city': properties.get('city', ''),
-                            'state': properties.get('state', ''),
-                            'country': properties.get('country', ''),
-                            'lat': properties.get('lat', ''),
-                            'lon': properties.get('lon', ''),
-                            'postcode': properties.get('postcode', '')
-                        }
-                        suggestions.append(suggestion)
+                suggestions = [{
+                    'text': f.get('properties', {}).get('formatted', ''),
+                    'address': f.get('properties', {}).get('address_line1', ''),
+                    'city': f.get('properties', {}).get('city', ''),
+                    'state': f.get('properties', {}).get('state', ''),
+                    'country': f.get('properties', {}).get('country', ''),
+                    'lat': f.get('properties', {}).get('lat', ''),
+                    'lon': f.get('properties', {}).get('lon', ''),
+                    'postcode': f.get('properties', {}).get('postcode', '')
+                } for f in data.get('features', [])]
 
                 return JsonResponse({'suggestions': suggestions})
             else:
@@ -265,10 +268,8 @@ def autocomplete_address(request):
     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
-
 def wallet(request):
-    if request.user .is_authenticated:
+    if request.user.is_authenticated:
         curr_user = request.user
         all_info = Info.objects.filter(user=curr_user)
-    return render(request,'wallet.html',{'w_info':all_info})
-
+    return render(request,'wallet.html',{'w_info': all_info if request.user.is_authenticated else []})
