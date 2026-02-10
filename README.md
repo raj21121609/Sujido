@@ -68,55 +68,72 @@ Sujido is a modern, full-stack taxi booking platform built with Django that conn
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup Guide
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package installer)
-- Git
+This guide will help you set up the Sujido project on a new device (Windows, macOS, or Linux).
 
-### Quick Start
+### 📋 Prerequisites
 
-1. **Clone the repository** 📥
-   ```bash
-   git clone https://github.com/yourusername/sujido-cab-booking.git
-   cd sujido-cab-booking
-   ```
+Before you begin, ensure you have the following installed:
+- **Python 3.8+**: [Download Python](https://www.python.org/downloads/)
+- **Git**: [Download Git](https://git-scm.com/downloads)
+- **Visual Studio Code** (Optional but recommended): [Download VS Code](https://code.visualstudio.com/)
 
-2. **Create a virtual environment** 🐍
-   ```bash
-   python -m venv venv
-   
-   # On Windows
-   venv\Scripts\activate
-   
-   # On macOS/Linux
-   source venv/bin/activate
-   ```
+### 🚀 Step-by-Step Setup
 
-3. **Install dependencies** 📦
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### 1. Clone the Repository
+Open your terminal or command prompt and run:
+```bash
+git clone https://github.com/raj21121609/cabBookingSystem.git
+cd cabBookingSystem
+```
 
-4. **Set up the database** 🗄️
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+#### 2. Create a Virtual Environment
+It's best practice to run Python projects in a virtual environment to isolate dependencies.
 
-5. **Create a superuser** 👑
-   ```bash
-   python manage.py createsuperuser
-   ```
+**Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-6. **Run the development server** 🚀
-   ```bash
-   python manage.py runserver
-   ```
+**macOS / Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+*You should see `(venv)` appear at the start of your terminal line.*
 
-7. **Open your browser** 🌐
-   Navigate to `http://127.0.0.1:8000` and start exploring!
+#### 3. Install Dependencies
+Install the required Python packages from `requirements.txt`:
+```bash
+pip install -r requirements.txt
+```
+
+#### 4. Apply Database Migrations
+Initialize the SQLite database and create the necessary tables:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+#### 5. Create an Administrator Account
+Create a superuser to access the Django admin panel:
+```bash
+python manage.py createsuperuser
+```
+*Follow the prompts to set a username, email, and password.*
+
+#### 6. Run the Development Server
+Start the server to run the application locally:
+```bash
+python manage.py runserver
+```
+
+#### 7. Access the Application
+Open your web browser and navigate to:
+- **Home Page:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Admin Panel:** [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
 ---
 
@@ -178,17 +195,33 @@ sujido-cab-booking/
 ## 🔧 Configuration
 
 ### API Keys Setup
-To use the location services, you'll need to configure API keys:
+This project uses **MapmyIndia** for routing/distance and **Geoapify** for address autocomplete. You need to obtain API keys for both services and update the `views.py` file.
 
-1. **Geoapify API** (for geocoding and routing)
-   - Sign up at [Geoapify](https://geoapify.com/)
-   - Get your API key
-   - Update the API key in `views.py`
+1. **MapmyIndia API**
+   - Sign up at [MapmyIndia](https://www.mapmyindia.com/api/)
+   - create a project and generating a token/key.
 
-2. **Environment Variables** (Recommended)
-   ```bash
-   # Create a .env file
-   GEOAPIFY_API_KEY=your_api_key_here
+2. **Geoapify API**
+   - Sign up at [Geoapify](https://www.geoapify.com/)
+   - Create a project and get your API Key.
+
+3. **Update `cab/myapp/views.py`**
+   - Open `cab/myapp/views.py`.
+   - Locate the `book` function (around line 135) and replace the `api_key` with your **MapmyIndia** key.
+   - Locate the `autocomplete_address` function (around line 239) and replace the `api_key` with your **Geoapify** key.
+
+   ```python
+   # In views.py
+
+   def book(request):
+       # ...
+       api_key = "YOUR_MAPMYINDIA_KEY_HERE"
+       # ...
+
+   def autocomplete_address(request):
+       # ...
+       api_key = "YOUR_GEOAPIFY_KEY_HERE"
+       # ...
    ```
 
 ---
