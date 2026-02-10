@@ -278,7 +278,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by the Sujido Team**
+**Made with ❤️ by the Raj**
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
@@ -290,7 +290,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- 🗺️ **Geoapify** - For providing excellent geocoding and routing APIs
+- 🗺️ **MapMyIndia** - For providing excellent geocoding and routing APIs
 - 🎨 **Unsplash/Pexels** - For beautiful stock images
 - 🚀 **Django Community** - For the amazing framework
 - 💡 **Open Source Contributors** - For inspiration and tools
