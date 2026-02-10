@@ -195,6 +195,17 @@
 
 
     <script src="{% static "js/booking.js" %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var confirmBtn = document.getElementById('confirmButton');
+        var form = document.querySelector('.booking-form');
+        if (confirmBtn && form) {
+          confirmBtn.addEventListener('click', function() {
+            form.submit();
+          });
+        }
+      });
+    </script>
 
 </body>
 </html>

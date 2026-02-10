@@ -10,4 +10,5 @@ urlpatterns = [
     path('book/',views.book,name='book'),
     path('api/autocomplete/',views.autocomplete_address,name='autocomplete'),
     path('wallet/',views.wallet , name ='wallet'),
+    path('wallet/add/', views.wallet_add, name='wallet_add'),
 ]

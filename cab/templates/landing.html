@@ -51,7 +51,7 @@
             style="color: white; font-size: 3rem; margin: 0; font-weight: bold; text-transform: capitalize; position: relative; z-index: 2;">
             Cab booking in palghar</h1>
 
-        <a href="/book"><button class="hero-button">Book Now</button></a>
+        <a href="{% url 'book' %}"><button class="hero-button">Book Now</button></a>
     </div>
 
     <div class="cards-container">
@@ -212,7 +212,7 @@
                     </div>
                 </div>
 
-                <button style="
+                <a href="{% url 'book' %}"><button style="
                     background: #2c1810;
                     color: white;
                     border: none;
@@ -225,7 +225,7 @@
                     font-size: 0.9rem;
                 " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
                     Book Taxi
-                </button>
+                </button></a>
             </div>
 
             <div style="
@@ -261,7 +261,7 @@
                     </div>
                 </div>
 
-                <button style="
+                <a href="{% url 'book' %}"><button style="
                     background: #2c1810;
                     color: white;
                     border: none;
@@ -274,7 +274,7 @@
                     font-size: 0.9rem;
                 " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
                     Book Taxi
-                </button>
+                </button></a>
             </div>
 
             <div style="
@@ -311,7 +311,7 @@
                     </div>
                 </div>
 
-                <button style="
+                <a href="{% url 'book' %}"><button style="
                     background: #2c1810;
                     color: white;
                     border: none;
@@ -324,11 +324,11 @@
                     font-size: 0.9rem;
                 " onmouseover="this.style.background='#1a0f08'" onmouseout="this.style.background='#2c1810'">
                     Book Taxi
-                </button>
+                </button></a>
             </div>
         </div>
 
-        <button style="
+        <a href="{% url 'book' %}"><button style="
             background: linear-gradient(135deg, #FFC107, #FFD54F);
             color: #2c1810;
             border: none;
@@ -346,7 +346,7 @@
         " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(255, 193, 7, 0.4)'"
             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 193, 7, 0.3)'">
             View All Services
-        </button>
+        </button></a>
     </div>
 
     <section id="reviews" class="testimonials">
@@ -493,9 +493,9 @@
                         </div>
                     </div>
                 </div>
-                <button
+                <a href="{% url 'book' %}"><button
                     style="margin-left:30px; background:#111; color:#fff; border-radius:28px; border:none; padding:14px 34px; font-weight:700; font-size:1.1em; cursor:pointer;">Book
-                    Taxi</button>
+                    Taxi</button></a>
             </div>
 
             <div
@@ -519,9 +519,9 @@
                         </div>
                     </div>
                 </div>
-                <button
+                <a href="{% url 'book' %}"><button
                     style="margin-left:30px; background:#111; color:#fff; border-radius:28px; border:none; padding:14px 34px; font-weight:700; font-size:1.1em; cursor:pointer;">Book
-                    Taxi</button>
+                    Taxi</button></a>
             </div>
         </div>
     </div>

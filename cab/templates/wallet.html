@@ -89,6 +89,18 @@
                         <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white-10"></div>
                         <div class="absolute -bottom-6 -left-6 w-10 h-10 rounded-full bg-white-10"></div>
                     </div>
+
+                    <div class="wallet-card rounded-xl p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-foreground">Add Funds</h3>
+                        <form method="post" action="{% url 'wallet_add' %}" class="flex items-end gap-3">
+                            {% csrf_token %}
+                            <div class="flex-1">
+                                <label for="amount" class="text-sm text-muted-foreground">Amount (₹)</label>
+                                <input id="amount" name="amount" type="number" min="1" required class="w-full p-3 rounded-lg border" placeholder="Enter amount" />
+                            </div>
+                            <button type="submit" class="btn-primary rounded-lg px-5 py-3 text-white">Add Money</button>
+                        </form>
+                    </div>
                     
                     <div class="wallet-card rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4 text-foreground">Quick Actions</h3>
@@ -139,89 +151,32 @@
                         </div>
 
                         <div class="space-y-1">
+                            {% for t in txs %}
                             <div class="transaction-item rounded-lg p-4 cursor-pointer">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center text-primary">
-                                        <span class="icon">🚗</span>
+                                    <div class="w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center {% if t.type == 'CREDIT' %}text-success{% else %}text-destructive{% endif %}">
+                                        <span class="icon">{% if t.type == 'CREDIT' %}↙️{% else %}🚗{% endif %}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between">
-                                            <h4 class="font-medium text-foreground truncate">Ride to Airport</h4>
-                                            <span class="font-semibold text-destructive">-₹85.50</span>
+                                            <h4 class="font-medium text-foreground truncate">{{ t.description|default:'Transaction' }}</h4>
+                                            <span class="font-semibold {% if t.type == 'CREDIT' %}text-success{% else %}text-destructive{% endif %}">
+                                                {% if t.type == 'CREDIT' %}+{% else %}-{% endif %}₹{{ t.amount }}
+                                            </span>
                                         </div>
                                         <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm text-muted-foreground truncate">Booked via CabApp</p>
+                                            <p class="text-sm text-muted-foreground truncate">{{ t.created_at }}</p>
                                             <div class="flex items-center gap-1 text-xs text-muted-foreground">
                                                 <span class="icon">🕐</span>
-                                                2 hours ago
+                                                {{ t.created_at|timesince }} ago
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="transaction-item rounded-lg p-4 cursor-pointer">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center text-success">
-                                        <span class="icon">↙️</span>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex items-center justify-between">
-                                            <h4 class="font-medium text-foreground truncate">Wallet Top-up</h4>
-                                            <span class="font-semibold text-success">+₹500.00</span>
-                                        </div>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm text-muted-foreground truncate">Added via UPI</p>
-                                            <div class="flex items-center gap-1 text-xs text-muted-foreground">
-                                                <span class="icon">🕐</span>
-                                                1 day ago
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="transaction-item rounded-lg p-4 cursor-pointer">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center text-primary">
-                                        <span class="icon">🚗</span>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex items-center justify-between">
-                                            <h4 class="font-medium text-foreground truncate">Ride to Mall</h4>
-                                            <span class="font-semibold text-destructive">-₹45.20</span>
-                                        </div>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm text-muted-foreground truncate">Booked via CabApp</p>
-                                            <div class="flex items-center gap-1 text-xs text-muted-foreground">
-                                                <span class="icon">🕐</span>
-                                                2 days ago
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="transaction-item rounded-lg p-4 cursor-pointer">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-primary-10 flex items-center justify-center text-primary">
-                                        <span class="icon">🚗</span>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex items-center justify-between">
-                                            <h4 class="font-medium text-foreground truncate">Ride to Office</h4>
-                                            <span class="font-semibold text-destructive">-₹67.80</span>
-                                        </div>
-                                        <div class="flex items-center justify-between mt-1">
-                                            <p class="text-sm text-muted-foreground truncate">Scheduled ride</p>
-                                            <div class="flex items-center gap-1 text-xs text-muted-foreground">
-                                                <span class="icon">🕐</span>
-                                                3 days ago
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% empty %}
+                            <div class="text-sm text-muted-foreground">No transactions yet.</div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

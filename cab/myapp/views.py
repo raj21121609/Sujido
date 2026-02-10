@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.conf import settings
 import requests
-from .models import Info
+from .models import Info, WalletTransaction
 
 User = get_user_model()
 
@@ -205,9 +205,19 @@ def book(request):
                             cost = round(distance * vehicle_pricing.get(vehicle, 0), 2)
                             if request.user.is_authenticated:
                                 current_user = request.user
-                                amount = Info.objects.get(user=current_user)
-                                amount.wallet_amount = amount.wallet_amount - cost
-                                amount.save()
+                                amount, _ = Info.objects.get_or_create(user=current_user, defaults={'wallet_amount': 0})
+                                int_cost = int(round(cost))
+                                if amount.wallet_amount >= int_cost:
+                                    amount.wallet_amount = amount.wallet_amount - int_cost
+                                    amount.save()
+                                    WalletTransaction.objects.create(
+                                        user=current_user,
+                                        amount=int_cost,
+                                        type=WalletTransaction.DEBIT,
+                                        description=f"Ride {pickup} to {drop}"
+                                    )
+                                else:
+                                    error_message = "Insufficient wallet balance. Please add funds in your wallet."
                         else:
                             error_message = "Invalid vehicle selection."
 
@@ -272,4 +282,32 @@ def wallet(request):
     if request.user.is_authenticated:
         curr_user = request.user
         all_info = Info.objects.filter(user=curr_user)
-    return render(request,'wallet.html',{'w_info': all_info if request.user.is_authenticated else []})
+        txs = WalletTransaction.objects.filter(user=curr_user).order_by('-created_at')
+    return render(request,'wallet.html',{
+        'w_info': all_info if request.user.is_authenticated else [],
+        'txs': txs if request.user.is_authenticated else []
+    })
+
+@csrf_exempt
+def wallet_add(request):
+    if not request.user.is_authenticated:
+        return redirect('landing')
+    if request.method == 'POST':
+        try:
+            amt = int(request.POST.get('amount', '0'))
+        except ValueError:
+            amt = 0
+        if amt <= 0:
+            messages.error(request, 'Please enter a valid amount to add.')
+            return redirect('wallet')
+        info, _ = Info.objects.get_or_create(user=request.user, defaults={'wallet_amount': 0})
+        info.wallet_amount += amt
+        info.save()
+        WalletTransaction.objects.create(
+            user=request.user,
+            amount=amt,
+            type=WalletTransaction.CREDIT,
+            description='Wallet top-up'
+        )
+        messages.success(request, f'₹{amt} added to your wallet.')
+    return redirect('wallet')
